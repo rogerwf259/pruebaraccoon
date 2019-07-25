@@ -7,7 +7,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const fetchFeelings = async () => {
     const response = await fetch(
-      'https://159.89.143.117:3001/raccoon/feelings',
+      'http://159.89.143.117:3001/raccoon/feelings',
       {
         method: 'GET'
       }
