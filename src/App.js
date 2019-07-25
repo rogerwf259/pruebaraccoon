@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import List from './components/List';
+import Loader from './components/Loader';
 
-function App() {
+export default function App() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const fetchFeelings = async () => {
+    const response = await fetch(
+      'http://159.89.143.117:3001/raccoon/feelings',
+      {
+        method: 'GET'
+      }
+    );
+    const { feelings } = await response.json();
+    setData(feelings);
+    setLoading(false);
+    console.log('Feelings', data);
+  };
+  useEffect(() => {
+    fetchFeelings();
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="ui container">
+      <div className="ui equal width stretched grid">
+        <div className="sixteen wide column">
+          <div className="ui equal width grid">
+            <div className="row centered">
+              {loading ? <Loader /> : <List items={data} />}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
-
-export default App;
